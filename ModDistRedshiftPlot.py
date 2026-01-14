@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math as m
+import astropy.constants as const
 
 # Create a list such that each element is a line from the Data.txt file
 data = [line.rstrip() for line in open('Data.txt')]
@@ -40,6 +41,21 @@ D_error = []
 for i in range(0, len(distance_modulus)):
     D.append(10**((distance_modulus[i]-25)/5))
     D_error.append(m.log(10)*(10**((distance_modulus[i]-25)/5)/5))
+
+# Calculate recession velocity
+c = const.c.value
+v = []
+for i in range(0, len(redshift)):
+    v.append(c*redshift[i])
+
+# plot recession velocity against luminosity distance
+plt.figure(figsize=(12,8))
+plt.errorbar(v, D,
+             yerr=D_error,
+             elinewidth=1, capsize=1, fmt='o',
+             alpha=0.5, ms=0.7)
+plt.xlabel('recession velocity (m/s)')
+plt.ylabel('luminosity distance')
 
 # plot redshift against luminosity distance
 plt.figure(figsize=(12,8))
