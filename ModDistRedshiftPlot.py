@@ -1,3 +1,4 @@
+
 import matplotlib.pyplot as plt
 import numpy as np
 import math as m
@@ -29,13 +30,35 @@ max_d = float(max(distance_modulus))
 min_r = float(min(redshift))
 max_r = float(max(redshift))
 
+# mu = 5log(D) + 25
+# D = 10^[(mu-25)/5] for luminosity distance
+# D_error = ln(10)*(10^((distance_modulus[i]-25)/5)/5)
+
+D = []
+D_error = []
+# Calculate the distance luminosty
+for i in range(0, len(distance_modulus)):
+    D.append(10**((distance_modulus[i]-25)/5))
+    D_error.append(m.log(10)*(10**((distance_modulus[i]-25)/5)/5))
+
+# plot redshift against luminosity distance
 plt.figure(figsize=(12,8))
-plt.errorbar(distance_modulus, redshift,
+plt.errorbar(redshift, D,
+             yerr=D_error,
+             elinewidth=1, capsize=1, fmt='o',
+             alpha=0.5, ms=0.7)
+plt.xlabel('redshift')
+plt.ylabel('luminosity distance')
+
+
+# plot redshift against distance modulus
+plt.figure(figsize=(12,8))
+plt.errorbar(redshift, distance_modulus,
              yerr=distance_modulus_error,
              elinewidth=1, capsize=1, fmt='o',
              alpha=0.5, ms=0.7)
-plt.xlabel('Distance modulus')
-plt.ylabel('redshift')
-plt.xlim(min_d - 0.5, max_d + 0.5)
-plt.ylim(min_r - 0.7, max_r + 0.7)
+plt.ylabel('Distance modulus')
+plt.xlabel('Redshift')
+plt.ylim(min_d - 0.5, max_d + 0.5)
+plt.xlim(min_r - 0.01, max_r + 0.01)
 plt.show()
