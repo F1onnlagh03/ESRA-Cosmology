@@ -6,6 +6,7 @@ import scipy.stats as stats
 
 # Create a list such that each element is a line from the Data.txt file
 data = [line.rstrip() for line in open('Data.txt')]
+open('Data.txt').close()
 
 # Delete first 5 terms from list
 del data[0:5]
